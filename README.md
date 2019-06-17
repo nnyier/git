@@ -1,112 +1,34 @@
-## Git Pro
+# Git
 
-## 常用命令
-
-```
-$ git log
-```
-
-默认不用任何参数的话，git log 会按提交时间列出所有的更新，最近的更新排在最上面。 正如你所看到的，这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
+## git config 配置用户信息
 
 ```
-$ git log -p -2
+$ git config --global user.name "your name"
+$ git config --global user.email "youremail@example.com"
 ```
 
-一个常用的选项是 -p，用来显示每次提交的内容差异。 你也可以加上 -2 来仅显示最近两次提交：
-该选项除了显示基本信息之外，还附带了每次 commit 的变化。 当进行代码审查，或者快速浏览某个搭档提交的 commit 所带来的变化的时候，这个参数就非常有用了。
+## git config --list 查看配置列表
 
-你也可以为 git log 附带一系列的总结性选项。 比如说，如果你想看到每次提交的简略的统计信息，你可以使用 --stat 选项：
+## git init 在现有项目中初始化仓库
 
-```
-$ git log --stat
-```
+## git clone 克隆现有仓库
 
---stat 选项在每次提交的下面列出所有被修改过的文件、有多少文件被修改了以及被修改过的文件的哪些行被移除或是添加了。 在每次提交的最后还有一个总结。
+## git status 检查当前文件的状态
 
---pretty 使用其他格式显示历史提交信息
+## git add [filename] 跟踪文件
 
-```
-$ git log --pretty
+## git add 暂存已修改文件
 
-    commit 37c07dac7b35edd45e64767f0c8f977b5848ae54 (HEAD -> master)
-    Author: nnyier <1049194608@qq.com>
-    Date:   Fri Jun 14 17:01:19 2019 +0800
+## git status -s 状态简览
 
-        a
+## .gitignore 忽略文件
 
-    commit 929f23c48be8ce4d9d1867d6ec34b989fa08a639
-    Author: nnyier <1049194608@qq.com>
-    Date:   Fri Jun 14 17:00:54 2019 +0800
+## git diff 查看已暂存和未暂存的修改
 
-        a
-```
+## git commit 提交更新
 
-```
-$ git log --pretty=format:"%h - %an, %ar : %s"
+## git commit -a -m 'xxxx' 跳过暂存区
 
-    37c07da - nnyier, 3 days ago : a
-    929f23c - nnyier, 3 days ago : a
-    0f5398c - nnyier, 3 days ago : modify
-    45cdee7 - nnyier, 3 days ago : a.js
-    0e80da8 - nnyier, 3 days ago : test
-```
+## git rm 移除文件
 
-| 选项 | 说明                                        |
-| :--- | :------------------------------------------ |
-| %H   | 提交对象（commit）的完整哈希字串            |
-| %h   | 提交对象的简短哈希字串                      |
-| %T   | 树对象（tree）的完整哈希字串                |
-| %t   | 树对象的简短哈希字串                        |
-| %P   | 父对象（parent）的完整哈希字串              |
-| %p   | 父对象的简短哈希字串                        |
-| %an  | 作者（author）的名字                        |
-| %ae  | 作者的电子邮件地址                          |
-| %ad  | 作者修订日期（可以用 --date= 选项定制格式） |
-| %ar  | 作者修订日期，按多久以前的方式显示          |
-| %cn  | 提交者（committer）的名字                   |
-| %ce  | 提交者的电子邮件地址                        |
-| %cd  | 提交日期                                    |
-| %cr  | 提交日期，按多久以前的方式显示              |
-| %s   | 提交说明                                    |
-
-**作者** 和 **提交者** 之间究竟有何差别， 其实作者指的是实际作出修改的人，提交者指的是最后将此工作成果提交到仓库的人。 所以，当你为某个项目发布补丁，然后某个核心成员将你的补丁并入项目时，你就是作者，而那个核心成员就是提交者
-
-```
-$ git log --pretty=format:"%h %s" --graph
-```
-
-## git log 常用选项
-
-| 选项            | 说明                                                                                                  |
-| :-------------- | :---------------------------------------------------------------------------------------------------- |
-| -p              | 按补丁格式显示每个更新之间的差异。                                                                    |
-| --stat          | 显示每次更新的文件修改统计信息。                                                                      |
-| --shortstat     | 只显示 --stat 中最后的行数修改添加移除统计。                                                          |
-| --name-only     | 仅在提交信息后显示已修改的文件清单。                                                                  |
-| --name-status   | 显示新增、修改、删除的文件清单。                                                                      |
-| --abbrev-commit | 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。                                                     |
-| --relative-date | 使用较短的相对时间显示（比如，“2 weeks ago”）。                                                       |
-| --graph         | 显示 ASCII 图形表示的分支合并历史。                                                                   |
-| --pretty        | 使用其他格式显示历史提交信息。可用的选项包括 oneline，short，full，fuller 和 format（后跟指定格式）。 |
-
-## 限制 git log 输出的选项
-
-| 选项              | 说明                               |
-| :---------------- | :--------------------------------- |
-| -(n)              | 仅显示最近的 n 条提交              |
-| --since, --after  | 仅显示指定时间之后的提交。         |
-| --until, --before | 仅显示指定时间之前的提交。         |
-| --author          | 仅显示指定作者相关的提交。         |
-| --committer       | 仅显示指定提交者相关的提交。       |
-| --grep            | 仅显示含指定关键字的提交           |
-| -S                | 仅显示添加或移除了某个关键字的提交 |
-
-```
-$ git log --pretty="%h - %s" --author=nnyier --since="2019-06-10"
-
-    37c07da - a
-    929f23c - a
-    0f5398c - modify
-    45cdee7 - a.js
-    0e80da8 - test
-```
+## git log 查看提交历史
